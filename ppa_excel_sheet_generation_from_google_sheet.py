@@ -10,6 +10,9 @@ process = sys.argv[1]
 track = sys.argv[2]
 pdk_version = sys.argv[3]
 vnom = sys.argv[4]
+google_spread_name = sys.argv[5]
+google_work_sheet_name = sys.argv[6]
+print (google_work_sheet_name)
 
 empty_header_value = [process,track,'','','','',pdk_version,vnom]
 print (empty_header_value)
@@ -21,8 +24,16 @@ creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", scope)
 
 client = gspread.authorize(creds)
 
+#google_spread_name = "12LPPLUS_V1.0_7P5T"
+
 # Open the google spreadhseet
-sheet = client.open("12LPPLUS_V1.0_7P5T").sheet1  
+#sheet = client.open(google_spread_name).sheet1
+#sheet = client.open(google_spread_name).sheet2
+#print (client.open(google_spread_name).worksheets())
+
+#sheet = client.open(google_spread_name).worksheet(google_work_sheet_name)
+
+sheet = client.open_by_url('https://docs.google.com/spreadsheets/d/1zsbqFlKmmQHJJmhRM9N_64x4Fa-5RlYjKKHKbs59VSE/edit#gid=559268704').worksheet(google_work_sheet_name)
 
 # Get a list of all records 
 data = sheet.get_all_values()
@@ -45,7 +56,7 @@ column = 0
 # declared list for heading 
 header = ['Process', 'Track', 'Threshold', 'Lg', 'PVT Corner', 'Temp', 'PDK Version', 'Vnom']
 # heading values
-empty_header_value = ['12LP+','7.5T','','','','','1.0','0.8'] 
+#empty_header_value = ['12LP+','7.5T','','','','','1.0','0.8'] 
 
 # assume highest length of row is 80, each 5 contains a block until the next empty list
 for start_index in range(0,30,5): 
