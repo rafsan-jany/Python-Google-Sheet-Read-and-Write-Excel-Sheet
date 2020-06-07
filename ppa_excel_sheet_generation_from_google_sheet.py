@@ -68,7 +68,9 @@ for start_index in range(0,30,5):
         item = j[start_index : end_index] # each list contains 5 elements
         column = 0
         if 'failed' not in item:
+            #print (item)
             for content in item: # each content in item list
+                #print (content)
                 if (content == 'hvt' or content == 'lvt' or content == 'rvt' or content == 'slvt'):
                     for header_content in header: # heading list for block
                         worksheet.write(row, column, header_content) # write on excel sheet
@@ -83,18 +85,32 @@ for start_index in range(0,30,5):
                             worksheet.write(row, column, header_value)
                             column = column + 1
                 #elif(content == 'lg30' or content == 'lg34' or content == 'lg38' or content == 'lg14' or content == 'lg16' or content == 'lg18' or content == 'lg20'):
-                elif (content in {'lg30', 'lg34', 'lg38', 'lg14', 'lg16', 'lg18', 'lg20', 'lg24', 'lg28', 'lg32', 'lg36'}):
+                elif (content in {'lg30', 'lg34', 'lg38', 'lg14', 'lg16', 'lg18', 'lg20', 'lg24', 'lg28', 'lg32', 'lg36', 'Lg14', 'Lg16'}):
                     worksheet.write(row, 3, content[2:4])
                 #elif (content == 'tt_25' or content == 'tt_85' or content == 'TT_25' or content == 'TT_85' or content == 'ss_n40' or content == 'ff_125' or content == 'FFPG_125' or content == 'SSPG_n40'):
-                elif(content in {'tt_25', 'tt_85', 'TT_25', 'TT_85', 'ss_n40', 'ff_125', 'FFPG_125', 'SSPG_n40', 'ffg_125', 'ssg_n40', 'tt25c'}):
+                elif(content in {'tt_25', 'tt_85', 'TT_25', 'TT_85', 'ss_n40', 'ff_125', 'FFPG_125', 'SSPG_n40', 'ffg_125', 'ssg_n40'}):
                     pvt_temp_list = content.split('_')
+                    print (pvt_temp_list)
                     worksheet.write(row, 4, pvt_temp_list[0].upper())
                     if (content == 'ss_n40' or content == 'SSPG_n40'):
                         worksheet.write(row, 5, '-' + pvt_temp_list[1][1:3] + 'C') # for corner in ss_n40, SSPG_n40, ff_125, FFPG_125
+                    #elif(content in {'tt25c', 'tt85c'}):
+                        #corner = content[0:2]
+                        #temp = content[2:4]
                     else:
-                        worksheet.write(row, 5, pvt_temp_list[1] + 'C') # for temp in ss_n40, SSPG_n40, ff_125, FFPG_125
-                elif(content == 'failed'):
-                    continue
+                        worksheet.write(row, 5, pvt_temp_list[1] + 'C') # for temp in tt25c, tt85c
+                elif(content in {'tt25c', 'tt85c'}):
+                    corner = content[0:2]
+                    worksheet.write(row, 4, corner.upper())
+                    temperature = content[2:4]
+                    worksheet.write(row, 5, temperature + 'C')
+                elif(content in {'ffgp125c','ssgn40'}):
+                    corner = content[0:4]
+                    worksheet.write(row, 4, corner.upper())
+                    temperature = content[4:7]
+                    worksheet.write(row, 5, temperature + 'C')
+                #elif(content == 'failed'):
+                    #continue
                 else:
                     worksheet.write(row, column, content) # for heading and other values for vdd, delay, iddq and ceff
                     column = column + 1
