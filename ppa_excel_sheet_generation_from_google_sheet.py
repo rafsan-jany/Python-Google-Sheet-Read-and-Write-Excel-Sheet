@@ -43,36 +43,41 @@ for start_index in range(0,80,5):
     #print ('start_index ', start_index)
     #print ('end_index ', end_index)
     for j in data:
-        #print (j[start_index : end_index])
+        print (j[start_index : end_index])
         item = j[start_index : end_index] # each list contains 5 elements
         column = 0
-        for content in item: # each content in item list
-            if (content == 'hvt' or content == 'lvt' or content == 'rvt' or content == 'slvt'):
-                for header_content in header: # heading list for block
-                    worksheet.write(row, column, header_content) # write on excel sheet
-                    column = column + 1
-                row = row + 1
-                column = 0
-                for header_value in empty_header_value: # value for heading list
-                    if(column == 2):
-                        worksheet.write(row, column, content.upper()) # threshold value
+        if 'failed' not in item:
+            for content in item: # each content in item list
+                if (content == 'hvt' or content == 'lvt' or content == 'rvt' or content == 'slvt'):
+                    for header_content in header: # heading list for block
+                        worksheet.write(row, column, header_content) # write on excel sheet
                         column = column + 1
+                    row = row + 1
+                    column = 0
+                    for header_value in empty_header_value: # value for heading list
+                        if(column == 2):
+                            worksheet.write(row, column, content.upper()) # threshold value
+                            column = column + 1
+                        else:
+                            worksheet.write(row, column, header_value)
+                            column = column + 1
+                elif(content == 'lg30' or content == 'lg34' or content == 'lg38' or content == 'lg14' or content == 'lg16' or content == 'lg18'):
+                    worksheet.write(row, 3, content[2:4])
+                elif (content == 'tt_25' or content == 'tt_85' or content == 'TT_25' or content == 'TT_85' or content == 'ss_n40' or content == 'ff_125' or content == 'FFPG_125' or content == 'SSPG_n40'):
+                    pvt_temp_list = content.split('_')
+                    worksheet.write(row, 4, pvt_temp_list[0].upper())
+                    if (content == 'ss_n40' or content == 'SSPG_n40'):
+                        worksheet.write(row, 5, '-' + pvt_temp_list[1][1:3] + 'C') # for corner in ss_n40, SSPG_n40, ff_125, FFPG_125
                     else:
-                        worksheet.write(row, column, header_value)
-                        column = column + 1
-            elif(content == 'lg30' or content == 'lg34' or content == 'lg38' or content == 'lg14' or content == 'lg16' or content == 'lg18'):
-                worksheet.write(row, 3, content[2:4])
-            elif (content == 'tt_25' or content == 'tt_85' or content == 'TT_25' or content == 'TT_85' or content == 'ss_n40' or content == 'ff_125' or content == 'FFPG_125' or content == 'SSPG_n40'):
-                pvt_temp_list = content.split('_')
-                worksheet.write(row, 4, pvt_temp_list[0].upper())
-                if (content == 'ss_n40' or content == 'SSPG_n40'):
-                    worksheet.write(row, 5, '-' + pvt_temp_list[1][1:3] + 'C') # for corner in ss_n40, SSPG_n40, ff_125, FFPG_125
+                        worksheet.write(row, 5, pvt_temp_list[1] + 'C') # for temp in ss_n40, SSPG_n40, ff_125, FFPG_125
+                elif(content == 'failed'):
+                    continue
                 else:
-                    worksheet.write(row, 5, pvt_temp_list[1] + 'C') # for temp in ss_n40, SSPG_n40, ff_125, FFPG_125
-            else:
-                worksheet.write(row, column, content) # for heading and other values for vdd, delay, iddq and ceff
-                column = column + 1
-        row = row + 1
+                    worksheet.write(row, column, content) # for heading and other values for vdd, delay, iddq and ceff
+                    column = column + 1
+            row = row + 1
+        else:
+            continue
     end_index = end_index + 5
 
 workbook.close() # close excel sheet
