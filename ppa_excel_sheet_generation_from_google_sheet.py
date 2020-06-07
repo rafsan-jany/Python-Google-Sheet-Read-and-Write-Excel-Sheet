@@ -31,16 +31,17 @@ client = gspread.authorize(creds)
 #sheet = client.open(google_spread_name).sheet2
 #print (client.open(google_spread_name).worksheets())
 
-#sheet = client.open(google_spread_name).worksheet(google_work_sheet_name)
+sheet = client.open(google_spread_name).worksheet(google_work_sheet_name)
 
-sheet = client.open_by_url('https://docs.google.com/spreadsheets/d/1zsbqFlKmmQHJJmhRM9N_64x4Fa-5RlYjKKHKbs59VSE/edit#gid=559268704').worksheet(google_work_sheet_name)
+#sheet = client.open_by_url('https://docs.google.com/spreadsheets/d/1zsbqFlKmmQHJJmhRM9N_64x4Fa-5RlYjKKHKbs59VSE/edit#gid=559268704').worksheet(google_work_sheet_name)
 
 # Get a list of all records 
 data = sheet.get_all_values()
 #print ('Processed Row ', len(data))
 
 # Excel sheet name
-generated_excel_sheet_name = '12LPPLUS_V1.0_7P5T.xlsx' 
+#generated_excel_sheet_name = '12LPPLUS_V1.0_7P5T.xlsx'
+generated_excel_sheet_name = google_work_sheet_name + '.xlsx' # same name as sheet name
   
 # Workbook() takes one, non-optional, argument which is the excel sheet name that we want to create. 
 workbook = xlsxwriter.Workbook(generated_excel_sheet_name) 
@@ -81,9 +82,11 @@ for start_index in range(0,30,5):
                         else:
                             worksheet.write(row, column, header_value)
                             column = column + 1
-                elif(content == 'lg30' or content == 'lg34' or content == 'lg38' or content == 'lg14' or content == 'lg16' or content == 'lg18'):
+                #elif(content == 'lg30' or content == 'lg34' or content == 'lg38' or content == 'lg14' or content == 'lg16' or content == 'lg18' or content == 'lg20'):
+                elif (content in {'lg30', 'lg34', 'lg38', 'lg14', 'lg16', 'lg18', 'lg20', 'lg24', 'lg28', 'lg32', 'lg36'}):
                     worksheet.write(row, 3, content[2:4])
-                elif (content == 'tt_25' or content == 'tt_85' or content == 'TT_25' or content == 'TT_85' or content == 'ss_n40' or content == 'ff_125' or content == 'FFPG_125' or content == 'SSPG_n40'):
+                #elif (content == 'tt_25' or content == 'tt_85' or content == 'TT_25' or content == 'TT_85' or content == 'ss_n40' or content == 'ff_125' or content == 'FFPG_125' or content == 'SSPG_n40'):
+                elif(content in {'tt_25', 'tt_85', 'TT_25', 'TT_85', 'ss_n40', 'ff_125', 'FFPG_125', 'SSPG_n40', 'ffg_125', 'ssg_n40', 'tt25c'}):
                     pvt_temp_list = content.split('_')
                     worksheet.write(row, 4, pvt_temp_list[0].upper())
                     if (content == 'ss_n40' or content == 'SSPG_n40'):
