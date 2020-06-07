@@ -1,9 +1,18 @@
 import gspread
 import xlsxwriter
+import sys
 from oauth2client.service_account import ServiceAccountCredentials
 from pprint import pprint
 from xlrd import open_workbook
 import time
+
+process = sys.argv[1]
+track = sys.argv[2]
+pdk_version = sys.argv[3]
+vnom = sys.argv[4]
+
+empty_header_value = [process,track,'','','','',pdk_version,vnom]
+print (empty_header_value)
 
 print ('Execution Started...')
 scope = ["https://spreadsheets.google.com/feeds",'https://www.googleapis.com/auth/spreadsheets',"https://www.googleapis.com/auth/drive.file","https://www.googleapis.com/auth/drive"]
@@ -39,11 +48,11 @@ header = ['Process', 'Track', 'Threshold', 'Lg', 'PVT Corner', 'Temp', 'PDK Vers
 empty_header_value = ['12LP+','7.5T','','','','','1.0','0.8'] 
 
 # assume highest length of row is 80, each 5 contains a block until the next empty list
-for start_index in range(0,80,5): 
+for start_index in range(0,30,5): 
     #print ('start_index ', start_index)
     #print ('end_index ', end_index)
     for j in data:
-        print (j[start_index : end_index])
+        #print (j[start_index : end_index])
         item = j[start_index : end_index] # each list contains 5 elements
         column = 0
         if 'failed' not in item:
@@ -83,29 +92,3 @@ for start_index in range(0,80,5):
 workbook.close() # close excel sheet
 print ('Execution Completed!!!')
 print ('Generated Excel Sheet Name: ', generated_excel_sheet_name, end = '')
-
-'''time.sleep(1)
-file = open_workbook(generated_excel_sheet_name).sheet_by_index(0)
-time.sleep(1)
-
-workbook_1 = xlsxwriter.Workbook('v21.xlsx')
-worksheet_1 = workbook_1.add_worksheet()
-
-for i in range(file.nrows):
-    #print (i)
-    #print(file.row_values(i))
-    v = file.row_values(i)
-    if 'failed' not in v:
-        #sheet.insert_row(file.row_values(i),i + 1)
-        for col in range(0, len(v)):
-            print (v[col])
-            worksheet_1.write(i, col, v[col])
-        #continue
-    else:
-        continue
-        #sheet.insert_row(file.row_values(i),i + 1)
-        #for col in range(0, len(v)):
-            #worksheet.write(i, col, v[col])
-            #ws1.row(i).write(col, v[col])
-        #time.sleep(1)
-workbook_1.close() '''
