@@ -31,9 +31,9 @@ client = gspread.authorize(creds)
 #sheet = client.open(google_spread_name).sheet2
 #print (client.open(google_spread_name).worksheets())
 
-sheet = client.open(google_spread_name).worksheet(google_work_sheet_name)
+sheet = client.open(google_spread_name).worksheet(google_work_sheet_name) # name for sheet
 
-#sheet = client.open_by_url('https://docs.google.com/spreadsheets/d/1zsbqFlKmmQHJJmhRM9N_64x4Fa-5RlYjKKHKbs59VSE/edit#gid=559268704').worksheet(google_work_sheet_name)
+#sheet = client.open_by_url('https://docs.google.com/spreadsheets/d/1zsbqFlKmmQHJJmhRM9N_64x4Fa-5RlYjKKHKbs59VSE/edit#gid=559268704').worksheet(google_work_sheet_name) # using google sheet link
 
 # Get a list of all records 
 data = sheet.get_all_values()
@@ -49,7 +49,7 @@ workbook = xlsxwriter.Workbook(generated_excel_sheet_name)
 # The workbook object is then used to add new worksheet via the add_worksheet() method. 
 worksheet = workbook.add_worksheet()
 
-start_index = 0
+start_index = 0 
 end_index = 5
 row = 0
 column = 0
@@ -63,9 +63,9 @@ header = ['Process', 'Track', 'Threshold', 'Lg', 'PVT Corner', 'Temp', 'PDK Vers
 for start_index in range(0,30,5): 
     #print ('start_index ', start_index)
     #print ('end_index ', end_index)
-    for j in data:
+    for each_list in data:
         #print (j[start_index : end_index])
-        item = j[start_index : end_index] # each list contains 5 elements
+        item = each_list[start_index : end_index] # each item list contains 5 elements, each_list contains a row from google sheet
         column = 0
         if 'failed' not in item:
             print (item)
